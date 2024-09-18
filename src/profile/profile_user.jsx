@@ -71,57 +71,58 @@ function Profile_USER(props) {
   };
   return (
     <div id="mobile-view" className={styles.background}>
-        <header className="app-header profileHeader defaultHeader">
-          <Link to="/home">
-            <span className="material-symbols-outlined">arrow_back_ios</span>              </Link>
-            <h3>마이 프로필</h3>
-        </header>
-        <main id="default-padding" className="profileMain">
-          <div id="profile-info">
-            <img src={userImg} id="profile-img" />
-            <div id="username-box">
-              <h2 id="profile-username">{nickname}</h2>
-              <h6 id="profile-usertype">참가자</h6>
-            </div>
+      <header className="app-header profileHeader defaultHeader">
+        <Link to="/home">
+          <span className="material-symbols-outlined">arrow_back_ios</span>{" "}
+        </Link>
+        <h3>마이 프로필</h3>
+      </header>
+      <main id="default-padding" className="profileMain">
+        <div id="profile-info">
+          <img src={userImg} id="profile-img" />
+          <div id="username-box">
+            <h2 id="profile-username">{nickname}</h2>
+            <h6 id="profile-usertype">참가자</h6>
           </div>
-          <div id="profile-bthBox">
-            <button
-              className="profile-btn"
-              onClick={() => {
-                navigate("/edit_profile2", {
-                  state: { nickname, userImg, introduction, permission, tag },
-                });
-              }}
-            >
-              프로필 수정
-            </button>
-            <button
-              className="profile-btn"
-              id="myClass"
-              onClick={() => {
-                navigate("/myClass");
-              }}
-            >
-              나의 클래스
-            </button>
-          </div>
-          <div id="profile-emptyBox">
-            <span id="profile-introduction">{introduction}</span>
-          </div>
+        </div>
+        <div id="profile-bthBox">
           <button
-            className="logoutBtn permissionBtn"
-            onClick={() =>
-              navigate("/edit_profile", {
-                state: { nickname, introduction },
-              })
-            }
+            className="profile-btn"
+            onClick={() => {
+              navigate("/edit_profile2", {
+                state: { nickname, userImg, introduction, permission, tag },
+              });
+            }}
           >
-            권한 변경하기
+            프로필 수정
           </button>
-          <button className="logoutBtn" onClick={onConfirm}>
-            로그아웃
+          <button
+            className="profile-btn"
+            id="myClass"
+            onClick={() => {
+              navigate("/completedClass");
+            }}
+          >
+            나의 클래스
           </button>
-        </main>
+        </div>
+        <div id="profile-emptyBox">
+          <span id="profile-introduction">{introduction}</span>
+        </div>
+        <button
+          className="logoutBtn permissionBtn"
+          onClick={() =>
+            navigate("/edit_profile", {
+              state: { nickname, introduction },
+            })
+          }
+        >
+          권한 변경하기
+        </button>
+        <button className="logoutBtn" onClick={onConfirm}>
+          로그아웃
+        </button>
+      </main>
       <Navbar></Navbar>
     </div>
   );
