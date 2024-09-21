@@ -56,9 +56,17 @@ function EditProfile2() {
   }, [previewUrl]);
   const handleImageChange = (e) => {
     const file = e.target.files[0]; // 첫 번째 파일을 가져옴
+
+    const maxSize = 10 * 1024 * 1024; // 10MB로 설정
+    if (file.size > maxSize) {
+      alert("이미지 파일 크기가 너무 큽니다. 10MB 이하의 파일을 선택해주세요.");
+      return; // 크기가 제한을 초과하면 함수 종료
+    }
+
     setImage(file); // 파일 객체를 상태에 저장
     setPreviewUrl(URL.createObjectURL(file)); // 미리보기 위해 URL로 변환
   };
+
   const onSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
