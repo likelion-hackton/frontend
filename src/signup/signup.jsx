@@ -22,6 +22,10 @@ function Signup1() {
   const [count, setCount] = useState(30);
   const [isCounting, setIsCounting] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [emailSpan, setEmailSpan] = useState("");
+  const [verfiSpan, setVerfiSpan] = useState("");
+  const [passwordSpan, setPasswordSpan] = useState("");
+  const [repassWSpan, setRePassWSpan] = useState("");
   useEffect(() => {
     // 30초 카운트 다운
     let intervalId;
@@ -50,7 +54,7 @@ function Signup1() {
     e.preventDefault();
     const baseURL = "https://sangsang2.kr:8080/api/member/send-verification";
     if (!email) {
-      alert("이메일 주소를 입력해 주십시오"); // 알림창 모달창으로 꾸며야 함
+      setEmailSpan("이메일 주소를 입력해 주십시오"); // 알림창 모달창으로 꾸며야 함
       return;
     } else {
       const verifDTO = { email };
@@ -65,13 +69,30 @@ function Signup1() {
           },
         });
         console.log("response received", response.data);
-        console.log("인증번호가 이메일로 전송되었습니다.");
+        setEmailSpan("인증번호가 이메일로 전송되었습니다.");
       } catch (error) {
         console.error("Error occurred during verification:", error);
         alert("인증번호 전송에 실패했습니다.");
       }
     }
   };
+
+  // 입력값이 변경될 때 스팬 초기화 및 보더 색상 수정
+  useEffect(() => {
+    if (email) setEmailSpan("");
+  }, [email]);
+
+  useEffect(() => {
+    if (passW) setPasswordSpan("");
+  }, [passW]);
+
+  useEffect(() => {
+    if (rePassW) setRePassWSpan("");
+  }, [rePassW]);
+
+  useEffect(() => {
+    if (verif) setVerfiSpan("");
+  }, [verif]);
 
   const onSignup = async (e) => {
     // 회원가입 API 호출
@@ -80,16 +101,27 @@ function Signup1() {
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()]).{8,}$/;
     const baseURL = "https://sangsang2.kr:8080/api/member/signup";
 
-    if (!passW || !email || !rePassW || !verif) {
-      alert("모든 입력칸은 채워주십시오");
-      return;
+    if (!email) {
+      setEmailSpan("이메일을 입력해 주십시오.");
+    }
+
+    if (!passW) {
+      setPasswordSpan("비밀번호를 입력해 주십시오.");
+    }
+
+    if (!rePassW) {
+      setRePassWSpan("비밀번호 확인을 입력해 주십시오.");
+    }
+
+    if (!verif) {
+      setVerfiSpan("인증 코드를 입력해 주십시오.");
     } else if (!passwordPattern.test(passW)) {
-      alert(
+      setPasswordSpan(
         "비밀번호는 최소 8자 이상이어야 하며, 대문자, 소문자, 숫자, 특수문자를 포함해야 합니다."
       );
       return;
     } else if (passW !== rePassW) {
-      alert("비밀번호가 일치하지 않습니다");
+      setRePassWSpan("비밀번호가 일치하지 않습니다");
       return;
     } else {
       const signupDTO = {
@@ -113,11 +145,15 @@ function Signup1() {
           const { error: errorMessage } = error.response.data;
           if (error.response.status === 400) {
             if (errorMessage === "이메일 중복") {
-              alert("이미 사용 중인 이메일입니다. 다른 이메일을 입력하세요.");
+              setEmailSpan(
+                "이미 사용 중인 이메일입니다. 다른 이메일을 입력하세요."
+              );
             } else if (errorMessage === "비밀번호 일치하지 않음") {
-              alert("비밀번호가 일치하지 않습니다. 다시 확인해주세요.");
+              setPasswordSpan(
+                "비밀번호가 일치하지 않습니다. 다시 확인해주세요."
+              );
             } else if (errorMessage === "유효하지 않은 인증코드") {
-              alert("유효하지 않은 인증코드입니다.");
+              setVerfiSpan("유효하지 않은 인증코드입니다.");
             } else {
               alert("회원가입에 실패했습니다."); // 다른 400 에러 처리
             }
@@ -166,10 +202,11 @@ function Signup1() {
               <div id="email-input">
                 <input
                   type="email"
-                  required
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="이메일을 입력하세요"
-                  className="inputBox_input"
+                  className={`inputBox_input ${
+                    emailSpan ? "error-border" : ""
+                  }`}
                 />
                 <button
                   id="verification_btn"
@@ -178,37 +215,42 @@ function Signup1() {
                 >
                   {buttonTxt}
                 </button>
+                <span className="alertSpan">{emailSpan}</span>
               </div>
             </div>
             <div className="login-inputBox">
               <span className="inputBox_txt">인증번호</span>
               <input
                 type="text"
-                required
                 onChange={(e) => setVerif(e.target.value)}
-                className="inputBox_input"
+                className={`inputBox_input ${verfiSpan ? "error-border" : ""}`}
                 placeholder="전송된 인증번호를 입력해주세요"
               />
+              <span className="alertSpan">{verfiSpan}</span>
             </div>
             <div className="login-inputBox">
               <span className="inputBox_txt">비밀번호</span>
               <input
                 type="password"
-                required
                 onChange={(e) => setPassW(e.target.value)}
                 placeholder="대.소문자, 숫자, 특수문자 포함 8자리 이상"
-                className="inputBox_input"
+                className={`inputBox_input ${
+                  passwordSpan ? "error-border" : ""
+                }`}
               />
+              <span className="alertSpan">{passwordSpan}</span>
             </div>
             <div className="login-inputBox">
               <span className="inputBox_txt">비밀번호 확인</span>
               <input
                 type="password"
-                required
                 onChange={(e) => setRePassW(e.target.value)}
                 placeholder="비밀번호를 다시 한번 입력해주세요"
-                className="inputBox_input"
+                className={`inputBox_input ${
+                  repassWSpan ? "error-border" : ""
+                }`}
               />
+              <span className="alertSpan">{repassWSpan}</span>
             </div>
           </div>
           <div className="input_divider" id="signup-footerBox">

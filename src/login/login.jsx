@@ -13,9 +13,24 @@ function Login() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [emailSpan, setEmailSpan] = useState(""); // 이메일 오류 메시지
+  const [passwordSpan, setPasswordSpan] = useState(""); // 비밀번호 오류 메시지
 
   const onLogin = async (e) => {
     e.preventDefault();
+
+    // 입력값 검증
+    if (!email) {
+      setEmailSpan("이메일을 입력해 주십시오.");
+    }
+
+    if (!password) {
+      setPasswordSpan("비밀번호를 입력해 주십시오.");
+    }
+
+    if (!email || !password) {
+      return; // 이메일 또는 비밀번호 입력이 없으면 리턴
+    }
     const loginDTO = {
       email: email,
       password: password,
@@ -23,7 +38,6 @@ function Login() {
     const baseURL = "https://sangsang2.kr:8080/api/member/login";
     console.log(loginDTO);
     if (!email || !password) {
-      alert("모든 입력칸을 채워주십시오");
       return;
     }
 
@@ -41,9 +55,9 @@ function Login() {
       setIsModalOpen(true);
     } catch (error) {
       if (error.message.includes("비밀번호가 일치하지 않음")) {
-        alert("비밀번호가 일치하지 않습니다. 다시 확인해주세요.");
+        setPasswordSpan("비밀번호가 일치하지 않습니다. 다시 확인해주세요.");
       } else if (error.message.includes("사용자 찾을 수 없음")) {
-        alert("사용자를 찾을 수 없습니다");
+        setEmailSpan("사용자를 찾을 수 없습니다");
       } else {
         alert("로그인에 실패했습니다.");
       }
@@ -85,19 +99,27 @@ function Login() {
               <span className="inputBox_txt">이메일</span>
               <input
                 type="email"
-                required
-                onChange={(e) => setEmail(e.target.value)}
-                className="inputBox_input"
+                className={`inputBox_input ${emailSpan ? "error-border" : ""}`}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setEmailSpan(""); // 입력이 수정되면 오류 메시지 제거
+                }}
               />
+              <span className="alertSpan">{emailSpan}</span>
             </div>
             <div className="login-inputBox">
               <span className="inputBox_txt">비밀번호</span>
               <input
                 type="password"
-                required
-                onChange={(e) => setPassword(e.target.value)}
-                className="inputBox_input"
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setPasswordSpan(""); // 입력이 수정되면 오류 메시지 제거
+                }}
+                className={`inputBox_input ${
+                  passwordSpan ? "error-border" : ""
+                }`}
               />
+              <span className="alertSpan">{passwordSpan}</span>
             </div>
           </div>
           <div className="input_divider">
