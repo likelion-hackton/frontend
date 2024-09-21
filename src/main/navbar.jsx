@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React } from 'react';
 import { NavLink } from "react-router-dom";
 import "./css/navbar.css";
 
@@ -32,9 +32,14 @@ const Navbar = () => {
                                 />
                               </div>
                               <p 
-                              className={`${item.className}Txt`}
-                              style={isActive ? {color : '#171217'} : {color:'#8C5E8A'}}
-                              >{item.text}</p>
+                                className={`${item.className}Txt`}
+                                style={isActive 
+                                    ? { color: '#171217', fontWeight: 'bold' } 
+                                    : { color: '#8C5E8A', fontWeight: 'normal' }
+                                }
+                              >
+                                {item.text}
+                              </p>
                             </>
                         )}
                     </NavLink>
@@ -42,6 +47,6 @@ const Navbar = () => {
             })}
         </div>
     );
-}
+};
 
 export default Navbar;

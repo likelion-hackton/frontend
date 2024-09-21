@@ -4,6 +4,7 @@ import "./css/applicationDetail.css";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import moment from "moment";
+import Modal from "react-modal";
 
 const ApplicationDetail = () => {
   const navigate = useNavigate();
@@ -13,12 +14,16 @@ const ApplicationDetail = () => {
   const location = useLocation();
   const classData = location.state?.classData;
   const [count, setCount] = useState(1);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  
   // classData.date를 초기 선택 날짜로 설정
-  const initialDate = classData ? new Date(classData.date) : new Date();
+  const initialDate = classData && classData.type == "OneDay" 
+  ? new Date(classData.date) : new Date(classData.startDate);
 
   const [date, setDate] = useState(initialDate);
   const [classTime, setClassTime] = useState(null);
+
   const onRefreshToken = async () => {
     const refreshResponse = await fetch(
       "https://sangsang2.kr:8080/api/memebr/refresh",
@@ -52,14 +57,14 @@ const ApplicationDetail = () => {
 
   useEffect(() => {
     if (classData) {
-      // 선택된 날짜와 classData의 날짜가 같은 경우 수강 시간 설정
+      // 선택된 날짜에 따라 수강 시간을 설정
       const selectedDate = moment(date).format("YYYY-MM-DD");
-      const classDate = classData.date;
-
-      if (selectedDate === classDate) {
-        const startTime = moment(classData.startTime, "HH:mm:ss").format(
-          "HH:mm"
-        );
+      if (classData.type === "OneDay" && selectedDate === classData.date) {
+        const startTime = moment(classData.startTime, "HH:mm:ss").format("HH:mm");
+        const endTime = moment(classData.endTime, "HH:mm:ss").format("HH:mm");
+        setClassTime(`${startTime} - ${endTime}`);
+      } else if (classData.type === "Regular" && selectedDate >= classData.startDate && selectedDate <= classData.endDate) {
+        const startTime = moment(classData.startTime, "HH:mm:ss").format("HH:mm");
         const endTime = moment(classData.endTime, "HH:mm:ss").format("HH:mm");
         setClassTime(`${startTime} - ${endTime}`);
       } else {
@@ -67,18 +72,20 @@ const ApplicationDetail = () => {
       }
     }
   }, [date, classData]);
+
   useEffect(() => {
     console.log("remainingSpace  :", classData.remainingSpace);
   }, []);
 
   const handleDateChange = (date) => {
     setDate(date);
-
-    // 선택된 날짜와 classData의 날짜가 같은 경우 수강 시간 설정
+    // 선택된 날짜에 따라 수강 시간을 설정
     const selectedDate = moment(date).format("YYYY-MM-DD");
-    const classDate = classData?.date;
-
-    if (selectedDate === classDate) {
+    if (classData.type === "OneDay" && selectedDate === classData.date) {
+      const startTime = moment(classData.startTime, "HH:mm:ss").format("HH:mm");
+      const endTime = moment(classData.endTime, "HH:mm:ss").format("HH:mm");
+      setClassTime(`${startTime} - ${endTime}`);
+    } else if (classData.type === "Regular" && selectedDate >= classData.startDate && selectedDate <= classData.endDate) {
       const startTime = moment(classData.startTime, "HH:mm:ss").format("HH:mm");
       const endTime = moment(classData.endTime, "HH:mm:ss").format("HH:mm");
       setClassTime(`${startTime} - ${endTime}`);
@@ -86,6 +93,26 @@ const ApplicationDetail = () => {
       setClassTime(null);
     }
   };
+
+  // 캘린더 특정 날짜에 따라 클래스 네임 반환 함수
+const getTileClassName = (date) => {
+  const dateObject = new Date(date);
+  const formattedDate = moment(dateObject).format("YYYY-MM-DD");
+
+  if (classData.type === "OneDay" && formattedDate === classData.date) {
+    return "selectedDay";
+  } 
+  else if (classData.type === "Regular" && moment(dateObject).isBetween(classData.startDate, classData.endDate, null, "[]")) {
+    return "selectedDay";
+  }
+  // 토요일 클래스 추가
+  if (dateObject.getDay() === 6) {
+    return "saturday"; 
+  }
+  return null;
+};
+
+  
 
   const handleApplicationClick = async () => {
     const baseUrl = `https://sangsang2.kr:8080/api/lecture/join?lecture=${id}&count=${count}`;
@@ -110,11 +137,17 @@ const ApplicationDetail = () => {
           }
         } else if (response.status === 400) {
           if (data.error === "이미 참가한 강의") {
-            alert("이미 참가한 강의입니다.");
+            // alert("이미 참가한 강의입니다.");
+            openModal("이미 참가한 강의입니다."); // 모달로 변경
           } else if (data.error === "강의 정원 가득참") {
-            alert("강의 정원이 가득 찼습니다.");
+            // alert("강의 정원이 가득 찼습니다.");
+            openModal("강의 정원이\n가득 찼습니다."); // 모달로 변경
+          } else if (data.error === "내가 개최한 강의") { // 추가된 부분
+            openModal("본인이 개최한 강의는\n신청할 수 없습니다.");
+            // alert("본인이 개최한 강의는 신청할 수 없습니다."); // 에러 메시지
           } else {
-            alert("강의 신청에 실패했습니다."); // 다른 400 에러 처리
+            openModal("강의 신청에\n실패했습니다.");
+            // alert("강의 신청에 실패했습니다."); // 다른 400 에러 처리
           }
         } else if (
           data.error === "토큰이 유효하지 않습니다." ||
@@ -128,14 +161,16 @@ const ApplicationDetail = () => {
           }
         }
         {
-          alert("강의 신청에 실패했습니다.");
+          // alert("강의 신청에 실패했습니다.");
+          console.log("강의 신청 실패")
         }
         return;
       }
-      console.log(data);
-      navigate("/home/class_application/completed");
-      alert("성공");
-      navigate("/home/class_application/completed");
+      console.log('신청 성공',data);
+      openModal("신청이 성공적으로\n완료되었습니다!"); // 성공 메시지 모달
+      setTimeout(() => {
+        navigate("/home"); // 2초 후에 페이지 이동
+    }, 2000);
     } catch (error) {
       console.error("Error occurred during delete:", error);
       alert("Error occurred " + error.message);
@@ -158,6 +193,15 @@ const ApplicationDetail = () => {
     }
   };
 
+  const openModal = (message) => {
+    setModalMessage(message);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div id="mobile-view">
       <header className="app-header defaultHeader">
@@ -168,14 +212,16 @@ const ApplicationDetail = () => {
       </header>
       <main id="default-padding" className="detailApplicationMain">
         <section id="calendarBox">
-          <Calendar
+        <Calendar
             formatDay={(locale, date) => moment(date).format("DD")}
             showNeighboringMonth={false} // 현재 월 이외의 날짜는 숨기기
-            tileClassName={({ date }) =>
-              date.getDay() === 6 ? "saturday" : null
-            } // 토요일에 클래스 추가
+            tileClassName={({ date }) => getTileClassName(date)}
             onChange={handleDateChange}
-            value={date} // 캘린더에서 선택된 날짜를 `date`로 설정
+            value={
+              classData.type === "OneDay"
+                ? new Date(classData.date) 
+                : [new Date(classData.startDate), new Date(classData.endDate)] // Regular 클래스일 때 날짜 범위
+            }
           />
         </section>
         {date && (
@@ -208,6 +254,21 @@ const ApplicationDetail = () => {
           취소하기
         </button>
       </div>
+
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        contentLabel="알림"
+        className="modal"
+        overlayClassName="overlay"
+      >
+        <h2>{modalMessage}</h2>
+        <div className="modal-buttons">
+          <button onClick={closeModal} className="confirm-btn">
+            확인
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 };

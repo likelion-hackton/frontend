@@ -60,11 +60,12 @@
   }
 }
 
-.loadingVideo{
+.loadingGif{
   width: 50%;
   height: auto;
   object-fit: contain;
 }
+
 
 /* 현재위치검색 버튼 */
 #map > .resetMapBtn{

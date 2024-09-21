@@ -67,6 +67,33 @@
     z-index: 0;  /* 글자보다 뒤에 위치하도록 설정 */
   /*   transform: scale(0.7);  *//* 원의 크기 조절 */
 }
+/* 선택된 날짜 */
+/* 시작 및 끝 날짜에 적용되는 클래스 */
+.react-calendar__tile--hasActive {
+    background-color: #006edc !important; 
+}
+.react-calendar__tile--active {
+    color: #000 !important;
+}
+
+/* .react-calendar__tile--active {
+    background: none !important; 
+    border-radius: 50% !important; 
+}
+.react-calendar__tile--active::before {
+    content: '';
+    position: absolute;
+    width: 30px; 
+    height: 30px; 
+    background-color: blue !important;  
+    border-radius: 50% !important;  
+    z-index: 0;  
+} */
+  
+
+
+
+
 
 /* 수강시간 */
 #selectTimeBox{

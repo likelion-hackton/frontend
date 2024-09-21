@@ -1,9 +1,9 @@
 import {React, useState, useEffect } from 'react';
-import { Link, useNavigate, NavLink } from "react-router-dom";
+import { Link, useNavigate, NavLink, } from "react-router-dom";
 import "./css/completed_application.css";
 
 const CompletedApplication = () => {
-
+    const navigate = useNavigate();
 
     return(
         <div id="mobile-view">
@@ -17,7 +17,7 @@ const CompletedApplication = () => {
                 <h3>수강 완료 페이지</h3>
             </main>
             <div className="detailApplicationBtnBox">
-                <button className="payingBtn">수강 취소하기</button>
+                <button className="payingBtn" onClick={() => navigate("/home")}>홈으로 가기</button>
             </div>
         </div>
     )

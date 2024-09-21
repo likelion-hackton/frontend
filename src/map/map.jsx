@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import Navbar from "../main/navbar";
 import "./map.css";
-import loadingVideo from "./media/loading.mp4";
+import loadingGif from "./media/loading.gif";
 
 const ClassMap = () => {
     const navigate = useNavigate();
@@ -203,10 +203,11 @@ const ClassMap = () => {
                                 <span className="logoIcon"></span>
                             </div>
                         </div>
-                        <video className="loadingVideo" autoPlay muted loop>
+                        {/* <video className="loadingVideo" autoPlay muted loop>
                             <source src={loadingVideo} type="video/mp4" />
                             Your browser does not support the video tag.
-                        </video>
+                        </video> */}
+                        <img className="loadingGif" src={loadingGif} alt="Loading_gif" />
                     </>
                 ) : (
                     <>

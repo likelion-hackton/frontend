@@ -35,7 +35,7 @@
   background: transparent; /* 스크롤바 트랙의 색상을 투명으로 설정 */
 }
 
-.myclass-contentBox {
+/* .myclass-contentBox {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -60,7 +60,7 @@
   line-height: 24px;
   text-align: left;
   color: rgba(61, 77, 92, 1);
-}
+} */
 
 /* 내가 생성한 클래스 */
 
@@ -75,7 +75,8 @@
 .myclass-box {
   position: relative;
   overflow: hidden;
-  height: 100px;
+  height: 150px;
+  margin-bottom: 20px;
 }
 
 .myclass-box_img {
@@ -126,12 +127,9 @@
   font-size: 11px;
 }
 
-/* @media (min-width: 550px) {
-  .myclass-gridBox {
-    grid-template-columns: repeat(
-      3,
-      1fr
-    ); 
+@media screen and (max-width: 530px) {
+  .myclass-box{
+    height: 90px;
   }
 }
- */
+

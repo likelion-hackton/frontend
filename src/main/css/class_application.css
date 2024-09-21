@@ -53,13 +53,16 @@
 /* 다연이가 수정함 */
 .classRating > .gotoReview {
   margin-left: 10px;
-  text-decoration: underline;
+  font-size: 10px;
+  color: #6c6c6c;
+  border-bottom: 1px solid #949494;
 }
-
-.classRating > img {
+/* .classRating > img {
   height: 11px;
   margin-left: 5px;
-}
+} */
+
+
 .titleContainer > h3 {
   font-size: 18px;
 }

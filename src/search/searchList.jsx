@@ -54,6 +54,8 @@ function SearchList() {
     }
   };
 
+  
+
   return (
     <div id="mobile-view">
       <header className="app-header reviewHeader defaultHeader">
@@ -100,7 +102,7 @@ function SearchList() {
             {courses.map((course) => (
               <div
                 key={course.id}
-                className="myclass-contentBox"
+                className="search-contentBox"
                 onClick={() => {
                   navigate(`/home/class_application/${course.id}`);
                 }}
@@ -108,12 +110,12 @@ function SearchList() {
                 <img
                   src={course.imageUrls || defaultImageUrl}
                   alt={course.name}
-                  className="myclass-contentBox_img"
+                  className="search-contentBox_img"
                 />
-                <h3>{course.name}</h3>
-                <span>${course.price.toLocaleString()}</span>
-                <div className="myclass-content_btnBox">
-                  <span>정규 수업</span>
+                <h4>{course.name}</h4>
+                <div>
+                  <p>${course.price.toLocaleString()}</p>
+                  <p>{course.type}</p>
                 </div>
               </div>
             ))}

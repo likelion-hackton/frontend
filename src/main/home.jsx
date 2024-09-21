@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // useNavigate 추가
 import Slider from "react-slick";
 import Navbar from "./navbar";
 import "./css/navbar.css";
@@ -10,8 +10,9 @@ import { categoryMap, classTypeMap } from "../utils/mappings";
 
 function Home() {
   const [banners, setBanners] = useState([]);
+  const navigate = useNavigate(); 
 
-  useEffect(() => { //배너 가져오기
+  useEffect(() => { // 배너 가져오기
     const fetchBanners = async () => {
       try {
         const response = await fetch("https://sangsang2.kr:8080/api/lecture/banner");
@@ -36,6 +37,11 @@ function Home() {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2300
+  };
+
+  // 배너 클릭 시 이동
+  const handleBannerClick = (id) => {
+    navigate(`/home/class_application/${id}`); 
   };
 
   return (
@@ -65,7 +71,11 @@ function Home() {
             <Slider {...settings} className="banner">
               {banners.length > 0 ? (
                 banners.map((banner) => (
-                  <div className="bannerImgWrapper" key={banner.id}>
+                  <div
+                    className="bannerImgWrapper"
+                    key={banner.id}
+                    onClick={() => handleBannerClick(banner.id)}
+                  >
                     <img
                       src={banner.imageUrl || "https://via.placeholder.com/338x150"}
                       alt={banner.name || "Banner"}
@@ -79,10 +89,9 @@ function Home() {
                   </div>
                 ))
               ) : (
-                <div>null</div>
+                <div>인기 클래스 불러오지 못함</div>
               )}
             </Slider>
-
           </section>
           <section className="categoryContainer">
             <h4 className="classTxt">카테고리</h4>
@@ -111,6 +120,7 @@ function Home() {
 }
 
 export default Home;
+
 
 
 

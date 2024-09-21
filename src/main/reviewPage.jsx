@@ -36,6 +36,13 @@ const ReviewInquiry = () => {
         );
         const averageData = await response.json();
         setAverageScore(averageData);
+
+        // 퍼센테이지 채워지는 애니메이션 효과 위해서 CSS 변수 설정
+        const ratingBars = document.querySelectorAll('.ratingBarFill');
+        ratingBars.forEach((bar, index) => {
+            bar.style.setProperty('--rating-width', `${ratingScores[index]}%`);
+            bar.classList.add('animated');
+        });
       } catch (error) {
         console.error("평균 스코어 정보를 가져오지 못했습니다:", error);
         alert("평균 스코어 정보를 가져오지 못했습니다.");
