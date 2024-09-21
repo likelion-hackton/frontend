@@ -106,14 +106,16 @@ function Chats() {
   }, []); // 빈 배열로 초기 마운트 시만 실행되도록
 
   return (
-    <div id="mobile-view">
-      <div id="chats-default-padding">
-        <header id="chats_header">
-          <img id="chats_myImg" src={myImg || "/user.png"} />
+    <div id="mobile-view" className="chatsBg">
+      <div id="chats-default-padding" className="chatsDefault">
+        <header className="chatHeader">
+          <div id="chats_header">
+            <img id="chats_myImg" src={myImg || "/user.png"} />
+          </div>
+          <div id="chats_title">
+            <h1>Chats</h1>
+          </div>
         </header>
-        <div id="chats_title">
-          <h1>Chats</h1>
-        </div>
         {/* 필터링 버튼 */}
         <div id="chatRoomTypeButtons">
           <button

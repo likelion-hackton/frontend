@@ -18,7 +18,7 @@
 
 .myclass-main {
   width: 100%;
-  height: calc(100% - 110px);
+  height: calc(100% - 100px);
   overflow-y: auto;
   /* border: 1px solid #333; */
 }
@@ -128,8 +128,7 @@
 }
 
 @media screen and (max-width: 530px) {
-  .myclass-box{
+  .myclass-box {
     height: 90px;
   }
 }
-

@@ -1,17 +1,32 @@
+.chatsBg {
+  background: #ffffff;
+}
+
+.chatsDefault {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.chatHeader {
+  background: #edbc7c;
+  height: 16%;
+}
 #chats_header {
   width: 100%;
   height: 35px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 20px;
-  padding: 5%;
+  padding: 20px 5% 10px;
 }
 
 #chats_myImg {
   border-radius: 50%;
   height: 25px;
   width: 25px;
+  border: 1px solid #f1f1f1;
 }
 
 #chats_title {
@@ -30,17 +45,13 @@
 
 #chats_list {
   width: 100%;
-  height: 62%;
+  height: 66%;
   padding: 0 5%;
   display: flex;
   align-items: center;
   flex-direction: column;
   overflow-y: auto;
-}
-
-#chats-default-padding {
-  width: 100%;
-  height: 100%;
+  background: #fffcf9;
 }
 
 .chats_li-column {
@@ -61,6 +72,7 @@
   height: 42px;
   width: 42px;
   margin-right: 15px;
+  border: 1px solid #f1f1f1;
 }
 
 #chats-readingCount {
@@ -97,9 +109,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
   padding: 0;
-  background-color: #f5f0f5;
+  background-color: #fef8fe;
+  box-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
 }
 
 #chatRoomTypeButtons button {
@@ -108,7 +120,7 @@
   height: 100%;
   margin: 0;
   font-size: 12px;
-  background-color: #f5f0f5;
+  background-color: #fef8fe;
 }
 
 .chatBtnActive {

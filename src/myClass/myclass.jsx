@@ -159,7 +159,12 @@ function Myclass() {
                 alt={course.name}
                 className="myclass-box_img"
               />
-              <h4 className="myclass-box_title">{course.name}</h4>
+              <h4
+                className="myclass-box_title"
+                onClick={() => navigate(`/home/class_application/${course.id}`)}
+              >
+                {course.name}
+              </h4>
               <span className="myclass-box_price">
                 ${course.price.toLocaleString()}
               </span>
