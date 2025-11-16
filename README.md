@@ -1,11 +1,13 @@
 #  MOMENT CLASS!
-<img width="1920" height="1080" alt="Image" src="https://github.com/user-attachments/assets/14cd7025-60ad-44ce-9d57-d81dbcf28b14" />
+<img width="1920" height="1080" alt="Image" src="https://github.com/user-attachments/assets/cd14866e-0228-4738-8f03-2e239d5a5be3" />
 
 ### 2024 멋쟁이사자처럼 AT 국민대 12기 교내해커톤
 > 원데이 클래스 부터 정규 수업까지, 성인을 위한 취미 찾기 플랫폼
 </br> 기간 : 24. 8. 3 ~ 25. 9. 21
 > </br> 1등 수상작🚩
 </br>
+
+![Image](https://github.com/user-attachments/assets/e6680f6c-5dd6-4789-9827-46180ab63437)
 
 ### 𝗣𝗿𝗼𝗷𝗲𝗰𝘁 𝗦𝗰𝗵𝗲𝗱𝘂𝗹𝗲
 
